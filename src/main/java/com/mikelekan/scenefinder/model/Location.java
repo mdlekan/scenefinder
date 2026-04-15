@@ -21,19 +21,15 @@ public class Location {
 
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
     private Point geom;
-
     private Integer elevationFt;
     private String bestSeason;
     private String bestTimeOfDay;
     private String accessNotes;
-
     private String difficulty;
     private String parkingNotes;
     private Boolean permitRequired;
     private String permitNotes;
     private String region;
-    private Double latitude;
-    private Double longitude;
 
     @Column(columnDefinition = "text[]")
     private String[] tags;

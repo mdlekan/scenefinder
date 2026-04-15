@@ -5,7 +5,6 @@ import com.mikelekan.scenefinder.model.Location;
 import com.mikelekan.scenefinder.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -46,8 +45,6 @@ public class LocationService
         dto.setId(location.getId());
         dto.setName(location.getName());
         dto.setDescription(location.getDescription());
-        dto.setLatitude(location.getGeom().getY());   // Y = latitude
-        dto.setLongitude(location.getGeom().getX());  // X = longitude
         dto.setElevationFt(location.getElevationFt());
         dto.setBestSeason(location.getBestSeason());
         dto.setBestTimeOfDay(location.getBestTimeOfDay());
@@ -58,6 +55,7 @@ public class LocationService
         dto.setPermitRequired(location.getPermitRequired());
         dto.setPermitNotes(location.getPermitNotes());
         dto.setRegion(location.getRegion());
+
         return dto;
     }
 }
