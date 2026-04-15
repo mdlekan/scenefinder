@@ -27,6 +27,14 @@ public class Location {
     private String bestTimeOfDay;
     private String accessNotes;
 
+    private String difficulty;
+    private String parkingNotes;
+    private Boolean permitRequired;
+    private String permitNotes;
+    private String region;
+    private Double latitude;
+    private Double longitude;
+
     @Column(columnDefinition = "text[]")
     private String[] tags;
 

@@ -53,6 +53,11 @@ public class LocationService
         dto.setBestTimeOfDay(location.getBestTimeOfDay());
         dto.setAccessNotes(location.getAccessNotes());
         dto.setTags(location.getTags());
+        dto.setDifficulty(location.getDifficulty());
+        dto.setParkingNotes(location.getParkingNotes());
+        dto.setPermitRequired(location.getPermitRequired());
+        dto.setPermitNotes(location.getPermitNotes());
+        dto.setRegion(location.getRegion());
         return dto;
     }
 }

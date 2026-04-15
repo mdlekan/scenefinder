@@ -14,4 +14,9 @@ public class LocationDTO {
     private String bestTimeOfDay;
     private String accessNotes;
     private String[] tags;
+    private String difficulty;
+    private String parkingNotes;
+    private Boolean permitRequired;
+    private String permitNotes;
+    private String region;
 }
