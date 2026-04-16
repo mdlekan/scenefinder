@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SceneFinder Colorado</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">
+        <span class="nav-icon">🏔</span>
+        <span>SceneFinder</span>
+    </div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/map}">Map</a>
+    </div>
+</nav>
+
+<div class="hero">
+    <h1>Find Your Perfect Scene</h1>
+    <p>Curated locations across Colorado for plein air painters and photographers</p>
+    <a th:href="@{/map}" class="btn-primary">Explore the Map</a>
+</div>
+
+<div class="stats">
+    <div class="stat">
+        <span class="stat-number">30+</span>
+        <span class="stat-label">Curated Locations</span>
+    </div>
+    <div class="stat">
+        <span class="stat-number">10</span>
+        <span class="stat-label">Colorado Regions</span>
+    </div>
+    <div class="stat">
+        <span class="stat-number">4</span>
+        <span class="stat-label">Seasons Covered</span>
+    </div>
+</div>
+
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>

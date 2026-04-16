@@ -37,6 +37,7 @@ public class LocationService
     }
 
     public Optional<LocationDTO> getLocationById(Long id) {
+
         return locationRepository.findById(id).map(this::toDTO);
     }
 
@@ -55,6 +56,8 @@ public class LocationService
         dto.setPermitRequired(location.getPermitRequired());
         dto.setPermitNotes(location.getPermitNotes());
         dto.setRegion(location.getRegion());
+        dto.setLatitude(location.getGeom().getY());
+        dto.setLongitude(location.getGeom().getX());
 
         return dto;
     }

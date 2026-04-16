@@ -18,4 +18,6 @@ public class LocationDTO
     private Boolean permitRequired;
     private String permitNotes;
     private String region;
+    private double latitude;
+    private double longitude;
 }
