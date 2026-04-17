@@ -3,17 +3,24 @@ package com.mikelekan.scenefinder.service;
 import com.mikelekan.scenefinder.dto.LocationDTO;
 import com.mikelekan.scenefinder.model.Location;
 import com.mikelekan.scenefinder.repository.LocationRepository;
-import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.locationtech.jts.geom.Coordinate;
 
 @Service
-@RequiredArgsConstructor
 public class LocationService
 {
     private final LocationRepository locationRepository;
+
+    public LocationService(LocationRepository locationRepository)
+    {
+        this.locationRepository = locationRepository;
+    }
 
     public List<LocationDTO> getAllLocations(String season, String tag)
     {
@@ -36,9 +43,16 @@ public class LocationService
                 .toList();
     }
 
-    public Optional<LocationDTO> getLocationById(Long id) {
-
+    public Optional<LocationDTO> getLocationById(Long id)
+    {
         return locationRepository.findById(id).map(this::toDTO);
+    }
+
+    public LocationDTO addNewLocation(LocationDTO inLocation)
+    {
+        Location location = locationRepository.save(locationDTOToLocation(inLocation));
+        
+        return toDTO(location);
     }
 
     private LocationDTO toDTO(Location location) {
@@ -60,5 +74,30 @@ public class LocationService
         dto.setLongitude(location.getGeom().getX());
 
         return dto;
+    }
+
+    protected Location locationDTOToLocation(LocationDTO inLocationDTO) {
+        Location location = new Location();
+
+        // Correct way to create a Point in JTS
+        GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+        Coordinate coordinate = new Coordinate(inLocationDTO.getLongitude(), inLocationDTO.getLatitude());
+        Point point = geometryFactory.createPoint(coordinate);
+
+        location.setName(inLocationDTO.getName());
+        location.setDescription(inLocationDTO.getDescription());
+        location.setElevationFt(inLocationDTO.getElevationFt());
+        location.setBestSeason(inLocationDTO.getBestSeason());
+        location.setBestTimeOfDay(inLocationDTO.getBestTimeOfDay());
+        location.setAccessNotes(inLocationDTO.getAccessNotes());
+        location.setTags(inLocationDTO.getTags());
+        location.setDifficulty(inLocationDTO.getDifficulty());
+        location.setParkingNotes(inLocationDTO.getParkingNotes());
+        location.setPermitRequired(inLocationDTO.getPermitRequired());
+        location.setPermitNotes(inLocationDTO.getPermitNotes());
+        location.setRegion(inLocationDTO.getRegion());
+        location.setGeom(point);
+
+        return location;
     }
 }

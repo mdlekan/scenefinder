@@ -3,6 +3,7 @@ package com.mikelekan.scenefinder.controller;
 import com.mikelekan.scenefinder.dto.LocationDTO;
 import com.mikelekan.scenefinder.service.LocationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -37,6 +38,14 @@ public class LocationController
             @RequestParam(defaultValue = "50") double radius)
     {
         return locationService.getNearbyLocations(lat, lng, radius);
+    }
+
+    @PostMapping
+    public ResponseEntity<LocationDTO> addNewLocation(@RequestBody LocationDTO inLocationDTO)
+    {
+        LocationDTO created = locationService.addNewLocation(inLocationDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
 }
