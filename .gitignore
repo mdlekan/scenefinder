@@ -1,0 +1,21 @@
+# Gradle
+.gradle/
+build/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Environment / secrets
+application-local.properties
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
