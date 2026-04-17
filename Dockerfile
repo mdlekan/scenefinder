@@ -1,13 +1,10 @@
 # Build stage
-FROM eclipse-temurin:21-jdk-alpine AS build
+FROM gradle:8.5-jdk21-alpine AS build
 WORKDIR /app
-COPY gradlew .
-COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 COPY src src
-RUN chmod +x ./gradlew
-RUN ./gradlew bootJar -x test
+RUN gradle bootJar -x test --no-daemon
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
