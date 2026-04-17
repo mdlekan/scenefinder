@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SceneFinder - Map</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="stylesheet" th:href="@{/css/map.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand">
+        <span class="nav-icon">🏔</span>
+        <span>SceneFinder</span>
+    </div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/map}">Map</a>
+    </div>
+</nav>
+
+<div class="map-layout">
+
+    <!-- Filter Panel -->
+    <div class="filter-panel">
+        <h3>Filter Locations</h3>
+
+        <div class="filter-group">
+            <label>Season</label>
+            <select id="filter-season" onchange="applyFilters()">
+                <option value="">All Seasons</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Fall">Fall</option>
+                <option value="Winter">Winter</option>
+                <option value="Year-round">Year-round</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Best Time of Day</label>
+            <select id="filter-time" onchange="applyFilters()">
+                <option value="">Any Time</option>
+                <option value="Morning">Morning</option>
+                <option value="Golden hour">Golden hour</option>
+                <option value="Midday">Midday</option>
+                <option value="Sunset">Sunset</option>
+                <option value="Sunrise">Sunrise</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Difficulty</label>
+            <select id="filter-difficulty" onchange="applyFilters()">
+                <option value="">Any Difficulty</option>
+                <option value="Easy">Easy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Hard">Hard</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Region</label>
+            <select id="filter-region" onchange="applyFilters()">
+                <option value="">All Regions</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>Tag</label>
+            <input type="text" id="filter-tag" placeholder="e.g. waterfall, aspens"
+                   onkeyup="applyFilters()">
+        </div>
+
+        <button class="btn-reset" onclick="resetFilters()">Reset Filters</button>
+
+        <div class="results-count">
+            <span id="location-count">0</span> locations shown
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map" style="flex: 1; min-height: 400px;"></div>
+
+    <!-- Location Detail Panel -->
+    <div class="detail-panel" id="detail-panel">
+        <button class="detail-close" onclick="closeDetail()">✕</button>
+        <div id="detail-content"></div>
+    </div>
+
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script th:src="@{/js/map.js}"></script>
+</body>
+</html>
