@@ -20,4 +20,8 @@ public class LocationDTO
     private String region;
     private double latitude;
     private double longitude;
+    private String sunriseTime;
+    private String morningGoldenHour;
+    private String eveningGoldenHour;
+    private String solarNoonTime;
 }

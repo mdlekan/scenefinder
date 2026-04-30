@@ -19,3 +19,12 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Personal notes
+Notes.txt
+QuestionsForPNC.txt
+HELP.md
+
+# Word docs and temp files
+*.docx
+~$*.docx
