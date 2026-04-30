@@ -72,6 +72,10 @@ public class LocationService
         dto.setRegion(location.getRegion());
         dto.setLatitude(location.getGeom().getY());
         dto.setLongitude(location.getGeom().getX());
+        dto.setSunriseTime(location.getSunriseTime());
+        dto.setMorningGoldenHour(location.getMorningGoldenHour());
+        dto.setEveningGoldenHour(location.getEveningGoldenHour());
+        dto.setSolarNoonTime(location.getSolarNoonTime());
 
         return dto;
     }

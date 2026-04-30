@@ -157,6 +157,23 @@ function showDetail(loc) {
                 <span class="detail-meta-value">${loc.bestTimeOfDay || '—'}</span>
             </div>
             <div class="detail-meta-row">
+            	<span class="detail-meta-label">Sunrise</span>
+            	<span class="detail-meta-value">${loc.sunriseTime || '—'}</span>
+            </div>
+            <div class="detail-meta-row">
+            	<span class="detail-meta-label">Morning Golden Hour</span>
+            	<span class="detail-meta-value">${loc.morningGoldenHour || '—'}</span>
+            </div>
+            <div class="detail-meta-row">
+            	<span class="detail-meta-label">Evening Golden Hour</span>
+            	<span class="detail-meta-value">${loc.eveningGoldenHour || '—'}</span>
+            </div>
+            <div class="detail-meta-row">
+            	<span class="detail-meta-label">Solar Noon Time</span>
+            	<span class="detail-meta-value">${loc.solarNoonTime || '—'}</span>
+            </div>
+
+            <div class="detail-meta-row">
                 <span class="detail-meta-label">Difficulty</span>
                 <span class="detail-meta-value">${loc.difficulty || '—'}</span>
             </div>
