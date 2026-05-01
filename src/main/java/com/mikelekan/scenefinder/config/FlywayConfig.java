@@ -18,13 +18,11 @@ public class FlywayConfig {
 
     @Bean(initMethod = "migrate")
     public Flyway flyway(DataSource dataSource) {
-        Flyway flyway = Flyway.configure()
+        return Flyway.configure()
                 .dataSource(dataSource)
                 .locations("classpath:db/migration")
                 .baselineOnMigrate(baselineOnMigrate)
                 .baselineVersion(baselineVersion)
                 .load();
-        flyway.repair();
-        return flyway;
     }
 }
