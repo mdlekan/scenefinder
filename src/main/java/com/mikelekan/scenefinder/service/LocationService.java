@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import org.locationtech.jts.geom.Coordinate;
@@ -16,10 +17,12 @@ import org.locationtech.jts.geom.Coordinate;
 public class LocationService
 {
     private final LocationRepository locationRepository;
+    private final SunCalculatorService sunCalculatorService;
 
-    public LocationService(LocationRepository locationRepository)
+    public LocationService(LocationRepository locationRepository, SunCalculatorService sunCalculatorService)
     {
         this.locationRepository = locationRepository;
+        this.sunCalculatorService = sunCalculatorService;
     }
 
     public List<LocationDTO> getAllLocations(String season, String tag)
@@ -76,6 +79,20 @@ public class LocationService
         dto.setMorningGoldenHour(location.getMorningGoldenHour());
         dto.setEveningGoldenHour(location.getEveningGoldenHour());
         dto.setSolarNoonTime(location.getSolarNoonTime());
+
+        // Calculate real time sun times
+        Map<String, String> sunTimes = sunCalculatorService
+                .calculateSunTimes(
+                        location.getGeom().getY(),
+                        location.getGeom().getX()
+                );
+
+        dto.setTodaySunrise(sunTimes.get("sunriseTime"));
+        dto.setTodaySunset(sunTimes.get("sunsetTime"));
+        dto.setTodayMorningGoldenHour(sunTimes.get("morningGoldenHour"));
+        dto.setTodayEveningGoldenHour(sunTimes.get("eveningGoldenHour"));
+        dto.setTodaySolarNoon(sunTimes.get("solarNoonTime"));
+
 
         return dto;
     }

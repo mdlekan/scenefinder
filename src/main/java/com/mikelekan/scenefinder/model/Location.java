@@ -16,7 +16,6 @@ public class Location {
 
     @Column(nullable = false)
     private String name;
-
     private String description;
 
     @Column(columnDefinition = "geometry(Point, 4326)", nullable = false)
@@ -30,11 +29,6 @@ public class Location {
     private Boolean permitRequired;
     private String permitNotes;
     private String region;
-    //sunrise_time, sunset_time, morning_golden_hour, evening_golden_hour, solar_noon_time
-    private String sunriseTime;
-    private String morningGoldenHour;
-    private String eveningGoldenHour;
-    private String solarNoonTime;
 
     @Column(columnDefinition = "text[]")
     private String[] tags;
