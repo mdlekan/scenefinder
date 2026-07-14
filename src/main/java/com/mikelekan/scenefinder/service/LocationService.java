@@ -75,10 +75,6 @@ public class LocationService
         dto.setRegion(location.getRegion());
         dto.setLatitude(location.getGeom().getY());
         dto.setLongitude(location.getGeom().getX());
-        dto.setSunriseTime(location.getSunriseTime());
-        dto.setMorningGoldenHour(location.getMorningGoldenHour());
-        dto.setEveningGoldenHour(location.getEveningGoldenHour());
-        dto.setSolarNoonTime(location.getSolarNoonTime());
 
         // Calculate real time sun times
         Map<String, String> sunTimes = sunCalculatorService
