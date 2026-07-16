@@ -37,6 +37,8 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	testAnnotationProcessor 'org.projectlombok:lombok'
+	// Source: https://mvnrepository.com/artifact/org.springframework.security/spring-security-core
+	implementation("org.springframework.security:spring-security-core:7.1.0")
 }
 
 tasks.named('test') {
