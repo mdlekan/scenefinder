@@ -1,10 +1,14 @@
 package com.mikelekan.scenefinder.controller;
 
 import com.mikelekan.scenefinder.dto.LocationDTO;
+import com.mikelekan.scenefinder.dto.LocationNoteRequestDTO;
+import com.mikelekan.scenefinder.dto.LocationNoteResponseDTO;
+import com.mikelekan.scenefinder.service.LocationNoteService;
 import com.mikelekan.scenefinder.service.LocationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -15,6 +19,7 @@ import java.util.List;
 public class LocationController
 {
     private final LocationService locationService;
+    private final LocationNoteService locationNoteService;
 
     @GetMapping
     public List<LocationDTO> getAllLocations(@RequestParam(required = false) String season,
@@ -29,6 +34,12 @@ public class LocationController
         return locationService.getLocationById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/notes")
+    public List<LocationNoteResponseDTO> getNotes(@PathVariable Long id)
+    {
+        return locationNoteService.getNotesForLocation(id);
     }
 
     @GetMapping("/nearby")
@@ -47,5 +58,4 @@ public class LocationController
 
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
-
 }

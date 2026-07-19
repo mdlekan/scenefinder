@@ -12,6 +12,12 @@ public class PageController
         return "index";
     }
 
+    @GetMapping("/login")
+    public String loginPage()
+    {
+        return "login";
+    }
+
     @GetMapping("/map")
     public String map()
     {

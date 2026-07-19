@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a note</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand"><span class="nav-icon">🏔</span><span>SceneFinder</span></div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/map}">Map</a>
+    </div>
+</nav>
+
+<div class="form-container">
+    <h1>Add a note for <span th:text="${location.name}"></span></h1>
+
+    <form th:action="@{/locations/{id}/add-note(id=${location.id})}"
+          th:object="${noteRequest}" method="post">
+
+        <label>Note
+            <textarea th:field="*{note}" rows="4" placeholder="e.g. Sun doesn't clear the eastern ridge until about 7am in summer"></textarea>
+        </label>
+
+        <label>Sunrise delay (minutes, if applicable)
+            <input type="number" th:field="*{sunriseDelayMinutes}"/>
+        </label>
+
+        <label>Sunset delay (minutes, if applicable)
+            <input type="number" th:field="*{sunsetDelayMinutes}"/>
+        </label>
+
+        <button type="submit" class="btn-primary">Submit note</button>
+    </form>
+</div>
+
+</body>
+</html>

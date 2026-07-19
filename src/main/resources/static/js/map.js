@@ -143,6 +143,10 @@ function showDetail(loc) {
            </div>`
         : '';
 
+    const noteAction = isAuthenticated
+        ? `<a href="/locations/${loc.id}/add-note" class="btn-primary">Add a note about this location</a>`
+        : `<p class="detail-login-prompt"><a href="/login">Log in</a> to add notes about this location.</p>`;
+
     content.innerHTML = `
         <div class="detail-name">${loc.name}</div>
         <div class="detail-region">${loc.region || ''}</div>
@@ -192,9 +196,28 @@ function showDetail(loc) {
             </div>
         </div>
         <div class="detail-tags">${tags}</div>
+        <div class="detail-actions">${noteAction}</div>
     `;
 
     panel.classList.add('open');
+
+    fetch(`/api/locations/${loc.id}/notes`)
+        .then(res => res.json())
+        .then(notes => {
+            const notesHtml = notes.length
+                ? notes.map(n => `
+                    <div class="community-note">
+                        <p>${n.note || ''}</p>
+                        ${n.sunriseDelayMinutes ? `<span class="note-meta">Sunrise delay: ${n.sunriseDelayMinutes} min</span>` : ''}
+                        <span class="note-author">— ${n.username}</span>
+                    </div>
+                `).join('')
+                : '<p class="no-notes">No community notes yet.</p>';
+
+            document.getElementById('detail-content').insertAdjacentHTML('beforeend',
+                `<div class="community-notes"><h3>Community notes</h3>${notesHtml}</div>`);
+        })
+        .catch(err => console.error('Failed to load notes:', err));
 }
 
 // Close detail panel

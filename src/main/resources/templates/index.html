@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,18 @@
     <div class="nav-links">
         <a th:href="@{/}">Home</a>
         <a th:href="@{/map}">Map</a>
+
+        <span sec:authorize="isAuthenticated()">
+            Welcome, <span sec:authentication="name">username</span>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="nav-link-button">Logout</button>
+            </form>
+        </span>
+
+        <span sec:authorize="isAnonymous()">
+            <a th:href="@{/login}">Login</a>
+            <a th:href="@{/register}">Register</a>
+        </span>
     </div>
 </nav>
 

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a location</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-brand"><span class="nav-icon">🏔</span><span>SceneFinder</span></div>
+    <div class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/map}">Map</a>
+    </div>
+</nav>
+
+<div class="form-container">
+    <h1>Add a new location</h1>
+
+    <form th:action="@{/locations/add}" th:object="${locationRequest}" method="post">
+
+        <label>Name <input type="text" th:field="*{name}" required/></label>
+        <label>Description <textarea th:field="*{description}" rows="3"></textarea></label>
+
+        <label>Latitude <input type="number" step="any" th:field="*{latitude}" required/></label>
+        <label>Longitude <input type="number" step="any" th:field="*{longitude}" required/></label>
+        <label>Elevation (ft) <input type="number" th:field="*{elevationFt}"/></label>
+
+        <label>Best season
+            <select th:field="*{bestSeason}">
+                <option value="Spring">Spring</option>
+                <option value="Summer">Summer</option>
+                <option value="Fall">Fall</option>
+                <option value="Winter">Winter</option>
+                <option value="Year-round">Year-round</option>
+            </select>
+        </label>
+
+        <label>Best time of day <input type="text" th:field="*{bestTimeOfDay}"/></label>
+
+        <label>Difficulty
+            <select th:field="*{difficulty}">
+                <option value="Easy">Easy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Hard">Hard</option>
+            </select>
+        </label>
+
+        <label>Region <input type="text" th:field="*{region}"/></label>
+        <label>Access notes <textarea th:field="*{accessNotes}" rows="2"></textarea></label>
+        <label>Parking notes <textarea th:field="*{parkingNotes}" rows="2"></textarea></label>
+
+        <label>
+            <input type="checkbox" th:field="*{permitRequired}"/> Permit required
+        </label>
+        <label>Permit notes <textarea th:field="*{permitNotes}" rows="2"></textarea></label>
+
+        <button type="submit" class="btn-primary">Add location</button>
+    </form>
+</div>
+
+</body>
+</html>
