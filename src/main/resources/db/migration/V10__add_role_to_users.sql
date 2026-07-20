@@ -1,28 +1,3 @@
--- Enable PostGIS extension
-CREATE EXTENSION IF NOT EXISTS postgis;
-
--- Locations table
-CREATE TABLE locations (
-                           id          BIGSERIAL PRIMARY KEY,
-                           name        VARCHAR(255) NOT NULL,
-                           description TEXT,
-                           geom        GEOMETRY(Point, 4326) NOT NULL,  -- WGS84 lat/lng
-                           elevation_ft INTEGER,
-
-    -- Useful for painters & photographers
-                           best_season VARCHAR(50),        -- 'Spring', 'Summer', 'Fall', 'Winter', 'Year-round'
-                           best_time_of_day VARCHAR(50),   -- 'Morning', 'Golden hour', 'Midday', 'Sunset'
-                           access_notes TEXT,              -- trail difficulty, parking, permits
-                           tags        TEXT[],             -- e.g. ARRAY['mountains', 'water', 'wildflowers']
-
-                           created_at  TIMESTAMP DEFAULT NOW(),
-                           updated_at  TIMESTAMP DEFAULT NOW()
-);
-
--- Spatial index for fast geo queries
-CREATE INDEX idx_locations_geom ON locations USING GIST(geom);
-
--- Seed a few Colorado test locations
 INSERT INTO locations (name, description, geom, elevation_ft, best_season, best_time_of_day, tags)
 VALUES
     ('Maroon Bells', 'Iconic twin peaks reflected in Maroon Lake near Aspen.',
