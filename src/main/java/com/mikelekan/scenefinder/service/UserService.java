@@ -22,7 +22,6 @@ public class UserService
     public UserResponseDTO addNewUser(UserRequestDTO newUserRequestDTO)
     {
         User newUser = createUser(newUserRequestDTO);
-
         User savedUser = userRepository.save(newUser);
 
         return createUserDTO(savedUser);

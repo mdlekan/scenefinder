@@ -2,7 +2,6 @@ package com.mikelekan.scenefinder.controller;
 
 import com.mikelekan.scenefinder.dto.LocationDTO;
 import com.mikelekan.scenefinder.dto.LocationNoteRequestDTO;
-import com.mikelekan.scenefinder.model.Location;
 import com.mikelekan.scenefinder.service.LocationNoteService;
 import com.mikelekan.scenefinder.service.LocationService;
 import org.springframework.security.core.Authentication;
@@ -35,6 +34,11 @@ public class LocationNoteController {
     public String submitNote(@PathVariable Long id,
                              @ModelAttribute LocationNoteRequestDTO noteRequest,
                              Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()
+                || "anonymousUser".equals(authentication.getPrincipal())) {
+            return "redirect:/login";
+        }
 
         String username = authentication.getName();
         locationNoteService.addNote(id, username, noteRequest);

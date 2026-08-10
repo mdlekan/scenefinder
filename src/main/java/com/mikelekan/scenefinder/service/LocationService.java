@@ -83,7 +83,6 @@ public class LocationService
                         location.getGeom().getX()
                 );
 
-        dto.setTodaySunrise(sunTimes.get("sunriseTime"));
         dto.setTodaySunset(sunTimes.get("sunsetTime"));
         dto.setTodayMorningGoldenHour(sunTimes.get("morningGoldenHour"));
         dto.setTodayEveningGoldenHour(sunTimes.get("eveningGoldenHour"));

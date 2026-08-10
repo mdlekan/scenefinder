@@ -24,7 +24,6 @@ public class LocationDTO
     private String morningGoldenHour;
     private String eveningGoldenHour;
     private String solarNoonTime;
-    private String todaySunrise;
     private String todayMorningGoldenHour;
     private String todayEveningGoldenHour;
     private String todaySolarNoon;

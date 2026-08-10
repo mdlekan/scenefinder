@@ -9,7 +9,12 @@ import com.mikelekan.scenefinder.repository.LocationNoteRepository;
 import com.mikelekan.scenefinder.repository.LocationRepository;
 import com.mikelekan.scenefinder.repository.UserRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,5 +62,24 @@ public class LocationNoteService {
                 .build();
 
         locationNoteRepository.save(note);
+    }
+
+    public Map<String, Long> keywordFrequency()
+    {
+        Map<String, Long> rawCounts = locationNoteRepository.findAll().stream()
+                .filter(note -> note.getNote() != null && !note.getNote().isEmpty())
+                .flatMap(note -> Arrays.stream(note.getNote().split("\\s+")))
+                .map(word -> word.replaceAll("[^a-zA-Z]", "").toLowerCase()) // added toLowerCase() so "Sunrise" and "sunrise" match!
+                .filter(word -> word.length() > 3)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        return rawCounts.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
     }
 }
