@@ -1,14 +1,37 @@
-# Build stage
-FROM gradle:8.14-jdk21-alpine AS build
+# ==========================================
+# Build Stage
+# ==========================================
+FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
-COPY build.gradle .
-COPY settings.gradle .
-COPY src src
-RUN gradle bootJar -x test --no-daemon
 
-# Run stage
+# Copy Gradle wrapper and configuration files for caching dependencies
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
+
+# Grant execution permissions to Gradle wrapper
+RUN chmod +x gradlew
+
+# Pre-download dependencies (improves build caching)
+RUN ./gradlew dependencies --no-daemon
+
+# Copy source code and build application
+COPY src src
+RUN ./gradlew bootJar --no-daemon -x test
+
+# ==========================================
+# Runtime Stage
+# ==========================================
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+
+# Create a non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+
+# Copy built JAR from the builder stage
+COPY --from=builder /app/build/libs/*.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-Djava.net.preferIPv4Stack=true", "-jar", "app.jar"]
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

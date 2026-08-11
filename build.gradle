@@ -21,7 +21,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	// Source: https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial
-	implementation 'org.hibernate:hibernate-spatial:7.3.1.Final'
+	implementation 'org.hibernate:hibernate-spatial:7.2.7.Final'
 	// Source: https://mvnrepository.com/artifact/org.locationtech.jts/jts-core
 	implementation 'org.locationtech.jts:jts-core:1.19.0'
 	implementation 'org.shredzone.commons:commons-suncalc:3.9'
