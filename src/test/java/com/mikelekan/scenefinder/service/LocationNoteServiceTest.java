@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -153,9 +154,15 @@ class LocationNoteServiceTest {
 
         Map<String, Long>  result = locationNoteService.keywordFrequency();
 
+        assertNotNull(result);
+        assertEquals(2L, result.get("great"));
+        assertEquals(2L, result.get("spot"));
+        assertFalse(result.containsKey("to"));
+        assertFalse(result.containsKey("for"));
 
-
-
+        // Verify top elements order
+        List<String> keys = new ArrayList<>(result.keySet());
+        assertEquals("great", keys.get(0));
 
 
     }
