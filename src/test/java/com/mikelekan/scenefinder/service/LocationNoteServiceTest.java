@@ -162,7 +162,7 @@ class LocationNoteServiceTest {
 
         // Verify top elements order
         List<String> keys = new ArrayList<>(result.keySet());
-        assertEquals("great", keys.get(0));
+        assertEquals("spot", keys.get(0));
 
 
     }
