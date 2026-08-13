@@ -2,7 +2,35 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '4.0.5'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'jacoco'
 }
+
+test {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		html.required = true
+	}
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			element = 'BUNDLE'
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.50 // Set initial threshold (e.g., 50%); increase as codebase grows
+			}
+		}
+	}
+}
+
+check.dependsOn jacocoTestCoverageVerification
 
 group = 'com.mikelekan'
 version = '0.0.1-SNAPSHOT'
