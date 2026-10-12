@@ -4,3 +4,6 @@ build/
 *.iml
 .git/
 *.md
+.env
+*.env
+backups/
