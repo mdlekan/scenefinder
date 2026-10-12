@@ -25,7 +25,8 @@ public class SecurityConfig
         http
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/map", "/login", "/register", "/api/registration", "/css/**", "/js/**", "/error").permitAll()
+                        .requestMatchers("/", "/map", "/login", "/register", "/api/registration",
+                                "/css/**", "/js/**", "/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/locations/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/locations").hasRole("ADMIN")
                         .requestMatchers("/locations/add").hasAllRoles("ADMIN")

@@ -32,8 +32,7 @@ public class LocationNoteService {
         this.userRepository = userRepository;
     }
 
-    public List<LocationNoteResponseDTO> getNotesForLocation(Long locationId)
-    {
+    public List<LocationNoteResponseDTO> getNotesForLocation(Long locationId) {
         return locationNoteRepository.findByLocationIdAndIsCurrentTrue(locationId).stream()
                 .map(note -> LocationNoteResponseDTO.builder()
                         .id(note.getId())
@@ -64,8 +63,7 @@ public class LocationNoteService {
         locationNoteRepository.save(note);
     }
 
-    public Map<String, Long> keywordFrequency()
-    {
+    public Map<String, Long> keywordFrequency() {
         Map<String, Long> rawCounts = locationNoteRepository.findAll().stream()
                 .filter(note -> note.getNote() != null && !note.getNote().isEmpty())
                 .flatMap(note -> Arrays.stream(note.getNote().split("\\s+")))
@@ -75,11 +73,47 @@ public class LocationNoteService {
 
         return rawCounts.entrySet().stream()
                 .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
-                 .collect(Collectors.toMap(
+                .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
                         (e1, e2) -> e1,
                         LinkedHashMap::new
                 ));
     }
+
+    public List<String> topFiveWords() {
+        return locationNoteRepository.findAll().stream()
+                .filter(note -> note.getNote() != null && !note.getNote().isEmpty())
+                .flatMap(note -> Arrays.stream(note.getNote().split("\\s+")))
+                .map(word -> word.replaceAll("[^a-zA-Z]", "").toLowerCase())
+                .filter(word -> word.length() > 3)
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream()
+                .sorted((a, b) -> b.getValue().compareTo(a.getValue()))  // sort by count, descending
+                .limit(5)                                                       // keep the first five
+                .map(Map.Entry::getKey)                                         // entry -> just the word
+                .collect(Collectors.toList());                                  // gather into a List<String>
+    }
+
+//    public Map<String, Long> notesPerUserName()
+//    {
+//        return locationNoteRepository.findAll().stream()
+//                .
+//    }
+
+
+    /*
+
+   1 Return the top 5 keywords as a List<String>, without the counts.
+   2 Count the notes per username, as a Map<String, Long>.
+   3 Find the average sunriseDelayMinutes per location ID, skipping notes where it's null.
+   4 Split the notes into two groups: those with a sunset delay over 15 minutes and the rest.
+   5 Find the note with the longest text. What should the return type be, and why?
+   6 Build a Map<String, List<String>> of username to their note texts, with each list ordered by createdAt.
+   7 Get the most recent note per location, as a Map<Long, LocationNote>. There are at least two ways to do this.
+   8 Get the min, max, and average sunset delay in a single pass.
+   9 Return the usernames who have written notes for more than one distinct location.
+   10 Given a String, find the first non-repeated character. This one is outside your domain, but it's a common interview question.
+
+     */
 }
