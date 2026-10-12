@@ -2,6 +2,12 @@ let map;
 let allLocations = [];
 let markers = [];
 
+function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, c => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+}
+
 // Initialize map centered on Colorado
 function initMap() {
     map = L.map('map').setView([39.0, -105.5], 7);
@@ -84,7 +90,7 @@ function renderMarkers(locations) {
             icon: createMarkerIcon(loc.bestSeason)
         });
 
-        marker.bindTooltip(loc.name, {
+        marker.bindTooltip(escapeHtml(loc.name), {
             permanent: false,
             direction: 'top',
             offset: [0, -8]
@@ -134,7 +140,7 @@ function showDetail(loc) {
     const content = document.getElementById('detail-content');
 
     const tags = (loc.tags || []).map(t =>
-        `<span class="tag">${t}</span>`).join('');
+        `<span class="tag">${escapeHtml(t)}</span>`).join('');
 
     const permit = loc.permitRequired
         ? `<div class="detail-meta-row">
@@ -148,9 +154,9 @@ function showDetail(loc) {
         : `<p class="detail-login-prompt"><a href="/login">Log in</a> to add notes about this location.</p>`;
 
     content.innerHTML = `
-        <div class="detail-name">${loc.name}</div>
-        <div class="detail-region">${loc.region || ''}</div>
-        <div class="detail-description">${loc.description || ''}</div>
+        <div class="detail-name">${escapeHtml(loc.name)}</div>
+        <div class="detail-region">${escapeHtml(loc.region)}</div>
+        <div class="detail-description">${escapeHtml(loc.description)}</div>
         <div class="detail-meta">
             <div class="detail-meta-row">
                 <span class="detail-meta-label">Best season</span>
@@ -188,11 +194,11 @@ function showDetail(loc) {
             ${permit}
             <div class="detail-meta-row">
                 <span class="detail-meta-label">Parking</span>
-                <span class="detail-meta-value">${loc.parkingNotes || '—'}</span>
+                <span class="detail-meta-value">${escapeHtml(loc.parkingNotes) || '—'}</span>
             </div>
             <div class="detail-meta-row">
                 <span class="detail-meta-label">Access</span>
-                <span class="detail-meta-value">${loc.accessNotes || '—'}</span>
+                <span class="detail-meta-value">${escapeHtml(loc.accessNotes) || '—'}</span>
             </div>
         </div>
         <div class="detail-tags">${tags}</div>
@@ -207,9 +213,9 @@ function showDetail(loc) {
             const notesHtml = notes.length
                 ? notes.map(n => `
                     <div class="community-note">
-                        <p>${n.note || ''}</p>
+                        <p>${escapeHtml(n.note)}</p>
                         ${n.sunriseDelayMinutes ? `<span class="note-meta">Sunrise delay: ${n.sunriseDelayMinutes} min</span>` : ''}
-                        <span class="note-author">— ${n.username}</span>
+                        <span class="note-author">— ${escapeHtml(n.username)}</span>
                     </div>
                 `).join('')
                 : '<p class="no-notes">No community notes yet.</p>';
