@@ -10,7 +10,6 @@ build/
 out/
 
 # Environment / secrets
-application.properties
 application-local.properties
 *.env
 
