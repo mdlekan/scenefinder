@@ -13,11 +13,11 @@ COPY build.gradle settings.gradle ./
 RUN chmod +x gradlew
 
 # Pre-download dependencies (cache mount keeps downloads between builds)
-RUN --mount=type=cache,target=/root/.gradle ./gradlew dependencies --no-daemon
+RUN ./gradlew dependencies --no-daemon
 
 # Copy source code and build application
 COPY src src
-RUN --mount=type=cache,target=/root/.gradle ./gradlew bootJar --no-daemon -x test
+RUN ./gradlew bootJar --no-daemon -x test
 
 # ==========================================
 # Runtime Stage
