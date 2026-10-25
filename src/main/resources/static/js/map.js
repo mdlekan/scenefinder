@@ -10,7 +10,14 @@ function escapeHtml(value) {
 
 // Initialize map centered on Colorado
 function initMap() {
-    map = L.map('map').setView([39.0, -105.5], 7);
+    const COLORADO_BOUNDS = L.latLngBounds([35.5, -111.0], [42.5, -100.0]);
+
+    map = L.map('map', {
+        maxBounds: COLORADO_BOUNDS,
+        maxBoundsViscosity: 1.0
+    }).setView([39.0, -105.5], 7);
+
+    map.setMinZoom(map.getBoundsZoom(COLORADO_BOUNDS));
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
