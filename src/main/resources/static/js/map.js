@@ -1,6 +1,9 @@
+/* global L, isAuthenticated */
+
 let map;
 let allLocations = [];
 let markers = [];
+let layerControl;
 
 function escapeHtml(value) {
     return String(value ?? '').replace(/[&<>"']/g, c => ({
@@ -8,28 +11,85 @@ function escapeHtml(value) {
     }[c]));
 }
 
+// Marker colors by season (shared by the markers and the legend)
+const SEASON_COLORS = {
+    'Spring':     '#27ae60',
+    'Summer':     '#2980b9',
+    'Fall':       '#e67e22',
+    'Winter':     '#8e44ad',
+    'Year-round': '#2c3e50'
+};
+
+// First season mentioned in free text like "Late Spring through Fall"
+function primarySeason(text) {
+    if (!text) return null;
+    const lower = text.toLowerCase();
+    let best = null;
+    let bestIndex = Infinity;
+    for (const s of ['Spring', 'Summer', 'Fall', 'Winter']) {
+        const i = lower.indexOf(s.toLowerCase());
+        if (i !== -1 && i < bestIndex) {
+            best = s;
+            bestIndex = i;
+        }
+    }
+    return best || (lower.includes('year') ? 'Year-round' : null);
+}
+
+// Legend explaining the marker colors
+function addLegend() {
+    const legend = L.control({ position: 'bottomleft' });
+    legend.onAdd = () => {
+        const div = L.DomUtil.create('div', 'map-legend');
+        div.innerHTML = '<h4>First season listed</h4>' +
+            Object.entries(SEASON_COLORS).map(([season, color]) =>
+                `<div class="legend-row"><span class="legend-swatch" style="background:${color}"></span>${season}</div>`
+            ).join('');
+        return div;
+    };
+    legend.addTo(map);
+}
+
 // Initialize map centered on Colorado
 function initMap() {
-    map = L.map('map').setView([39.0, -105.5], 7);
+    const COLORADO_BOUNDS = L.latLngBounds([35.5, -111.0], [42.5, -100.0]);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors',
         maxZoom: 18
-    }).addTo(map);
+    });
+    const topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © OpenStreetMap contributors, SRTM | Style © OpenTopoMap (CC-BY-SA)',
+        maxNativeZoom: 17,
+        maxZoom: 18
+    });
+    const satellite = L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles © Esri, Maxar, Earthstar Geographics, and the GIS User Community',
+            maxZoom: 18
+        });
+
+    map = L.map('map', {
+        layers: [street],
+        maxBounds: COLORADO_BOUNDS,
+        maxBoundsViscosity: 1.0
+    }).setView([39.0, -105.5], 7);
+
+    map.setMinZoom(map.getBoundsZoom(COLORADO_BOUNDS));
+
+    layerControl = L.control.layers(
+        { 'Street': street, 'Topographic': topo, 'Satellite': satellite }
+    ).addTo(map);
+
+    L.control.scale({ metric: false, imperial: true, position: 'bottomleft' }).addTo(map);
+    addLegend();
 
     loadLocations();
 }
 
 // Custom marker icon
 function createMarkerIcon(season) {
-    const colors = {
-        'Spring':     '#27ae60',
-        'Summer':     '#2980b9',
-        'Fall':       '#e67e22',
-        'Winter':     '#8e44ad',
-        'Year-round': '#2c3e50'
-    };
-    const color = colors[season] || '#2c3e50';
+    const color = SEASON_COLORS[season] || '#2c3e50';
 
     return L.divIcon({
         className: '',
@@ -87,7 +147,7 @@ function renderMarkers(locations) {
         }
 
         const marker = L.marker([loc.latitude, loc.longitude], {
-            icon: createMarkerIcon(loc.bestSeason)
+            icon: createMarkerIcon(primarySeason(loc.bestSeason))
         });
 
         marker.bindTooltip(escapeHtml(loc.name), {
