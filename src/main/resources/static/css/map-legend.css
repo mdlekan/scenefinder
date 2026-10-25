@@ -1,0 +1,28 @@
+/* Legend control for the map (add to the end of map.css) */
+.map-legend {
+    background: rgba(255, 255, 255, 0.92);
+    padding: 8px 10px;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.map-legend h4 {
+    margin: 0 0 4px;
+    font-size: 12px;
+}
+
+.legend-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
+}
