@@ -1,4 +1,15 @@
 # ==========================================
+# Frontend Stage (compile TypeScript)
+# ==========================================
+FROM node:22-alpine AS frontend
+WORKDIR /web
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY tsconfig.json ./
+COPY src/main/ts ./src/main/ts
+RUN npm run build
+
+# ==========================================
 # Build Stage
 # ==========================================
 FROM eclipse-temurin:21-jdk-alpine AS builder
@@ -12,11 +23,13 @@ COPY build.gradle settings.gradle ./
 # Grant execution permissions to Gradle wrapper
 RUN chmod +x gradlew
 
-# Pre-download dependencies (cache mount keeps downloads between builds)
+# Pre-download dependencies
 RUN ./gradlew dependencies --no-daemon
 
-# Copy source code and build application
+# Copy source code, then overlay the compiled JS from the frontend stage
 COPY src src
+COPY --from=frontend /web/src/main/resources/static/js/map.js src/main/resources/static/js/map.js
+
 RUN ./gradlew bootJar --no-daemon -x test
 
 # ==========================================

@@ -11,6 +11,8 @@ out/
 
 # Environment / secrets
 application-local.properties
+.env
+.env.*
 *.env
 
 # OS
@@ -28,3 +30,11 @@ HELP.md
 # Word docs and temp files
 *.docx
 ~$*.docx
+
+
+# compiled TypeScript output
+src/main/resources/static/js/map.js
+node_modules/
+
+backups/
+*.dump
