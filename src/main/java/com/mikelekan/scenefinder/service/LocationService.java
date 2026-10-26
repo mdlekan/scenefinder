@@ -87,6 +87,7 @@ public class LocationService
         dto.setTodayMorningGoldenHour(sunTimes.get("morningGoldenHour"));
         dto.setTodayEveningGoldenHour(sunTimes.get("eveningGoldenHour"));
         dto.setTodaySolarNoon(sunTimes.get("solarNoonTime"));
+        dto.setTodaySunrise(sunTimes.get("sunriseTime"));
 
 
         return dto;
