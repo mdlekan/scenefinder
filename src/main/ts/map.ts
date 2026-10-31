@@ -300,4 +300,9 @@ function closeDetail(): void {
     byId('detail-panel').classList.remove('open');
 }
 
+function toggleFilters(): void {
+    const open = byId('filter-panel').classList.toggle('open');
+    byId('filter-toggle').setAttribute('aria-expanded', String(open));
+}
+
 initMap();

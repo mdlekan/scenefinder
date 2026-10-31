@@ -28,8 +28,11 @@
 
 <div class="map-layout">
 
+    <button id="filter-toggle" class="filter-toggle" onclick="toggleFilters()"
+            aria-expanded="false" aria-controls="filter-panel">☰ Filters</button>
+
     <!-- Filter Panel -->
-    <div class="filter-panel">
+    <div class="filter-panel" id="filter-panel">
         <h3>Filter Locations</h3>
 
         <div class="filter-group">
@@ -87,7 +90,7 @@
     </div>
 
     <!-- Map Container -->
-    <div id="map" style="flex: 1; min-height: 400px;"></div>
+    <div id="map"></div>
 
     <!-- Location Detail Panel -->
     <div class="detail-panel" id="detail-panel">

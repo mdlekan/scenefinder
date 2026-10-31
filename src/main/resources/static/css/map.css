@@ -83,6 +83,7 @@
 /* Map */
 #map {
     flex: 1;
+    min-height: 300px;
     z-index: 1;
 }
 
@@ -179,4 +180,68 @@
     border-radius: 20px;
     font-size: 0.78rem;
     font-weight: 500;
+}
+
+.filter-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .map-layout {
+        flex-direction: column;
+        height: calc(100vh - 56px);   /* fallback */
+        height: calc(100dvh - 56px);  /* accounts for the mobile browser toolbar */
+    }
+
+    .filter-toggle {
+        display: block;
+        width: 100%;
+        padding: 0.7rem 1rem;
+        background: white;
+        border: none;
+        border-bottom: 1px solid #e8e6e0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #2c3e50;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    /* Filters become a dropdown over the map, hidden until toggled */
+    .filter-panel {
+        display: none;
+        position: absolute;
+        top: 44px;
+        left: 0;
+        right: 0;
+        width: auto;
+        min-width: 0;
+        max-height: 60%;
+        border-right: none;
+        border-bottom: 1px solid #e8e6e0;
+        z-index: 600;
+    }
+
+    .filter-panel.open {
+        display: block;
+    }
+
+    /* Detail panel becomes a bottom sheet */
+    .detail-panel {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        max-height: 55%;
+        border-left: none;
+        border-top: 1px solid #e8e6e0;
+        border-radius: 12px 12px 0 0;
+        transform: translateY(100%);
+    }
+
+    .detail-panel.open {
+        transform: translateY(0);
+    }
 }
